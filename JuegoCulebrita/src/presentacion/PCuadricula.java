@@ -6,11 +6,11 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 import logica.Culebrita;
 import logica.Manzana;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.Timer;
 
-public class PCuadricula extends JPanel {
+public class PCuadricula extends JPanel implements KeyListener {
     private static final int FILAS = 15;
     private static final int COLUMNAS = 15;
     private int anchoCelda;
@@ -23,12 +23,10 @@ public class PCuadricula extends JPanel {
         culebrita = new Culebrita();
         manzana = new Manzana((int) (Math.random() * 15), (int) (Math.random() * 15));
 
-        timer = new Timer(500, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                moverSerpiente();
-            }
-        });
+        timer = new Timer(500, e -> moverSerpiente());
+
+        addKeyListener(this);
+        setFocusable(true);
     }
 
     @Override
@@ -64,10 +62,28 @@ public class PCuadricula extends JPanel {
         manzana.generarNuevaPosicion();
         timer.start();
         repaint();
+        
+        // Solicitar el enfoque para el componente PCuadricula
+        requestFocusInWindow();
     }
+
 
     private void moverSerpiente() {
         culebrita.mover();
         repaint();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        culebrita.moverCulebrita(e);
+        repaint();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 }
