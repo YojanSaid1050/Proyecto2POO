@@ -3,14 +3,18 @@ package presentacion;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import logica.Culebrita;
 import logica.Manzana;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
-public class PCuadricula extends JPanel implements KeyListener {
+public class PCuadricula extends JPanel {
     private static final int FILAS = 15;
     private static final int COLUMNAS = 15;
     private int anchoCelda;
@@ -23,10 +27,12 @@ public class PCuadricula extends JPanel implements KeyListener {
         culebrita = new Culebrita();
         manzana = new Manzana((int) (Math.random() * 15), (int) (Math.random() * 15));
 
-        timer = new Timer(500, e -> moverSerpiente());
-
-        addKeyListener(this);
-        setFocusable(true);
+        timer = new Timer(500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                moverSerpiente();
+            }
+        });
     }
 
     @Override
@@ -63,27 +69,19 @@ public class PCuadricula extends JPanel implements KeyListener {
         timer.start();
         repaint();
         
-        // Solicitar el enfoque para el componente PCuadricula
-        requestFocusInWindow();
+        ((FCulebrita) SwingUtilities.getWindowAncestor(this)).reiniciarTiempo();
     }
 
 
     private void moverSerpiente() {
         culebrita.mover();
+        if (culebrita.getFila() < 0 || culebrita.getFila() >= FILAS ||
+            culebrita.getColumna() < 0 || culebrita.getColumna() >= COLUMNAS) {
+            timer.stop();
+            JOptionPane.showMessageDialog(this, "¡Has perdido! La serpiente chocó con los bordes del tablero.");
+            nuevoJuego();
+        }
         repaint();
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        culebrita.moverCulebrita(e);
-        repaint();
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-    }
 }

@@ -32,28 +32,28 @@ public class Culebrita {
     public void moverCulebrita(KeyEvent e) {
         int keyCode = e.getKeyCode();
         if (keyCode == KeyEvent.VK_UP && direccion != 2) {
-            direccion = 0; // Arriba
+            direccion = 0; 
         } else if (keyCode == KeyEvent.VK_RIGHT && direccion != 3) {
-            direccion = 1; // Derecha
+            direccion = 1; 
         } else if (keyCode == KeyEvent.VK_DOWN && direccion != 0) {
-            direccion = 2; // Abajo
+            direccion = 2; 
         } else if (keyCode == KeyEvent.VK_LEFT && direccion != 1) {
-            direccion = 3; // Izquierda
+            direccion = 3; 
         }
     }
 
     public void mover() {
         switch (direccion) {
-            case 0: // Arriba
+            case 0:
                 fila--;
                 break;
-            case 1: // Derecha
+            case 1:
                 columna++;
                 break;
-            case 2: // Abajo
+            case 2:
                 fila++;
                 break;
-            case 3: // Izquierda
+            case 3:
                 columna--;
                 break;
         }

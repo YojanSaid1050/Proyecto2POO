@@ -61,6 +61,12 @@ public class FCulebrita extends JFrame {
 
         pCuadricula.nuevoJuego();
     }
+    
+    public void reiniciarTiempo() {
+        segundos = 0;
+        lTiempo.setText("Tiempo: " + segundos + "s");
+    }
+
 
     public static void main(String[] args) {
         new FCulebrita();
