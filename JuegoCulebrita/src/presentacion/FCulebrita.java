@@ -61,12 +61,16 @@ public class FCulebrita extends JFrame {
         timer.start();
 
         pCuadricula.nuevoJuego();
-        pCuadricula.requestFocusInWindow(); // Asegura que el JPanel tenga el enfoque
+        pCuadricula.requestFocusInWindow();
     }
     
     public void reiniciarTiempo() {
         segundos = 0;
         lTiempo.setText("Tiempo: " + segundos + "s");
+    }
+    public void reiniciarPuntaje() {
+        puntaje = 0;
+        lPuntaje.setText("Puntaje: " + puntaje);
     }
     
     public void actualizarPuntaje() {

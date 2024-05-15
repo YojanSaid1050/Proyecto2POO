@@ -1,24 +1,25 @@
 package logica;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Culebrita {
-    private int fila;
-    private int columna;
+    private List<int[]> cuerpo;
     private int direccion;
 
     public Culebrita() {
-        this.fila = (int) (Math.random() * 15);
-        this.columna = (int) (Math.random() * 15);
+        this.cuerpo = new ArrayList<>();
+        cuerpo.add(new int[]{(int) (Math.random() * 15), (int) (Math.random() * 15)});
         this.direccion = 1;
     }
 
-    public int getFila() {
-        return fila;
+    public List<int[]> getCuerpo() {
+        return cuerpo;
     }
 
-    public int getColumna() {
-        return columna;
+    public int[] getCabeza() {
+        return cuerpo.get(0);
     }
 
     public int getDireccion() {
@@ -43,25 +44,57 @@ public class Culebrita {
     }
 
     public void mover() {
+        int[] cabeza = getCabeza();
+        int[] nuevaCabeza = new int[2];
         switch (direccion) {
             case 0:
-                fila--;
+                nuevaCabeza[0] = cabeza[0] - 1;
+                nuevaCabeza[1] = cabeza[1];
                 break;
             case 1:
-                columna++;
+                nuevaCabeza[0] = cabeza[0];
+                nuevaCabeza[1] = cabeza[1] + 1;
                 break;
             case 2:
-                fila++;
+                nuevaCabeza[0] = cabeza[0] + 1;
+                nuevaCabeza[1] = cabeza[1];
                 break;
             case 3:
-                columna--;
+                nuevaCabeza[0] = cabeza[0];
+                nuevaCabeza[1] = cabeza[1] - 1;
                 break;
         }
+        cuerpo.add(0, nuevaCabeza);
+        cuerpo.remove(cuerpo.size() - 1);
+    }
+
+    public void crecer() {
+        int[] cabeza = getCabeza();
+        int[] nuevaCabeza = new int[2];
+        switch (direccion) {
+            case 0:
+                nuevaCabeza[0] = cabeza[0] - 1;
+                nuevaCabeza[1] = cabeza[1];
+                break;
+            case 1:
+                nuevaCabeza[0] = cabeza[0];
+                nuevaCabeza[1] = cabeza[1] + 1;
+                break;
+            case 2:
+                nuevaCabeza[0] = cabeza[0] + 1;
+                nuevaCabeza[1] = cabeza[1];
+                break;
+            case 3:
+                nuevaCabeza[0] = cabeza[0];
+                nuevaCabeza[1] = cabeza[1] - 1;
+                break;
+        }
+        cuerpo.add(0, nuevaCabeza);
     }
 
     public void nuevoJuego() {
-        fila = (int) (Math.random() * 15);
-        columna = (int) (Math.random() * 15);
+        cuerpo.clear();
+        cuerpo.add(new int[]{(int) (Math.random() * 15), (int) (Math.random() * 15)});
         direccion = 1;
     }
 }
