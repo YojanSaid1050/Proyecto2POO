@@ -12,9 +12,12 @@ import logica.Culebrita;
 import logica.Manzana;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.Timer;
 
-public class PCuadricula extends JPanel {
+public class PCuadricula extends JPanel implements KeyListener {
     private static final int FILAS = 15;
     private static final int COLUMNAS = 15;
     private int anchoCelda;
@@ -26,7 +29,9 @@ public class PCuadricula extends JPanel {
     public PCuadricula() {
         culebrita = new Culebrita();
         manzana = new Manzana((int) (Math.random() * 15), (int) (Math.random() * 15));
-
+        setFocusable(true);
+        requestFocusInWindow();
+        addKeyListener(this);
         timer = new Timer(500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -73,15 +78,45 @@ public class PCuadricula extends JPanel {
     }
 
 
-    private void moverSerpiente() {
+    void moverSerpiente() {
         culebrita.mover();
+        
+        // Verificar colisión con los bordes del tablero
         if (culebrita.getFila() < 0 || culebrita.getFila() >= FILAS ||
             culebrita.getColumna() < 0 || culebrita.getColumna() >= COLUMNAS) {
             timer.stop();
             JOptionPane.showMessageDialog(this, "¡Has perdido! La serpiente chocó con los bordes del tablero.");
             nuevoJuego();
         }
+        
+        // Verificar colisión con la manzana
+        if (culebrita.getFila() == manzana.getFila() && culebrita.getColumna() == manzana.getColumna()) {
+            // Colisión detectada: la serpiente ha alcanzado la manzana
+            
+            // Generar una nueva posición aleatoria para la manzana
+            manzana.generarNuevaPosicion();
+            
+            // Actualizar el puntaje
+            ((FCulebrita) SwingUtilities.getWindowAncestor(this)).actualizarPuntaje();
+        }
+        
         repaint();
     }
 
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println("Tecla presionada: " + e.getKeyCode());
+        culebrita.moverCulebrita(e);
+        // Repintar el JPanel después de mover la serpiente
+        repaint();
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
 }

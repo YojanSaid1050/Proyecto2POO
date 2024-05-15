@@ -12,6 +12,7 @@ public class FCulebrita extends JFrame {
     private JLabel lTiempo;
     private Timer timer;
     private int segundos;
+    private int puntaje;
 
     public FCulebrita() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -52,7 +53,7 @@ public class FCulebrita extends JFrame {
         setVisible(true);
     }
 
-    private void nuevoJuego() {
+    public void nuevoJuego() {
         segundos = 0;
         lPuntaje.setText("Puntaje: 0");
         lTiempo.setText("Tiempo: 0s");
@@ -60,13 +61,18 @@ public class FCulebrita extends JFrame {
         timer.start();
 
         pCuadricula.nuevoJuego();
+        pCuadricula.requestFocusInWindow(); // Asegura que el JPanel tenga el enfoque
     }
     
     public void reiniciarTiempo() {
         segundos = 0;
         lTiempo.setText("Tiempo: " + segundos + "s");
     }
-
+    
+    public void actualizarPuntaje() {
+        puntaje += 1;
+        lPuntaje.setText("Puntaje: " + puntaje);
+    }
 
     public static void main(String[] args) {
         new FCulebrita();
